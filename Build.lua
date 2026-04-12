@@ -1,5 +1,4 @@
--- premake5.lua
-workspace "SpaceInvaders"
+workspace "Console IDLE"
    architecture "x64"
    configurations { "Debug", "Release", "Dist" }
    startproject "App"
@@ -10,8 +9,12 @@ workspace "SpaceInvaders"
 
 OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
 
-group "Core"
-	include "Core/Build-Core.lua"
-group ""
+
+files { ".clang-format", ".gitignore", "README.md" }
+
+vpaths {
+      ["Solution Items/*"] = { ".clang-format", ".gitignore", "README.md"}
+   }
+
 
 include "App/Build-App.lua"
