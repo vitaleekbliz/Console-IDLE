@@ -8,6 +8,21 @@ void Game::Run()
 
 void Game::DebugConsole()
 {
-	std::string obj = "Hello World!\nThis is a debug console.\nYou can write anything here.";
-	// consoleRenderer_.Draw(0, 0, 0, 0, obj);
+	std::cout << std::string(30, '-');
+
+	ConsoleRenderer::Get().Init(200, 200);
+
+	std::string test(16, '#');
+
+	ConsoleRenderer::Get().Draw(3, 7, 4, 4, test);
+	ConsoleRenderer::Get().Draw(-1, 7, 4, 4, test);
+	ConsoleRenderer::Get().Draw(3, -1, 4, 4, test);
+	ConsoleRenderer::Get().Draw(3, 7, 46, -4, test);
+	ConsoleRenderer::Get().Draw(3, 7, 46, 0, test);
+	ConsoleRenderer::Get().Draw(3, 7, 43443434, 4, test);
+
+	ConsoleRenderer::Get().DrawFrame();
+
+	ConsoleRenderer::Get().Draw(3, 7, 4, 4, test);
+	ConsoleRenderer::Get().DrawFrame();
 }

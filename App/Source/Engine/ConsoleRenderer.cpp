@@ -1,62 +1,73 @@
 #include "ConsoleRenderer.h"
 
-ConsoleRenderer* ConsoleRenderer::consoleRenderer_ = nullptr;
-
-static std::vector<std::string> split(const std::string& s, char delim)
+void ConsoleRenderer::Init(int width, int height)
 {
-	std::vector<std::string> result;
-	std::stringstream ss(s);
-	std::string item;
-
-	while (getline(ss, item, delim))
-	{
-		result.push_back(item);
-	}
-
-	return result;
-}
-
-void ConsoleRenderer::Init()
-{
+	// last column will be new line
+	m_Width = width + 1;
+	m_Height = height;
+	m_Buffer.assign((size_t)m_Width * m_Width, ' ');
 }
 
 void ConsoleRenderer::Close()
 {
+	m_Buffer.clear();
 }
 
-void ConsoleRenderer::Draw(int x, int y, int w, int h, std::string buffer)
+void ConsoleRenderer::Draw(int x, int y, int width, int heigh, const std::string& buffer)
 {
-	if (x < 0 || y < 0)
+	if (x < 0 || y < 0 || x > m_Width || y > m_Height)
 	{
-		std::cout << "\nConsoleRenderer::Draw\nInvalid coordinates: (X=" << x << ", Y=" << y << ")" << std::endl;
+		ERROR("%s - Drawing out of bounds (x %d, y %d)", __FUNCTION__, x, y);
 		return;
 	}
-	if (!value_.empty())
-	{
-		std::vector<std::string> splitedBuffer = split(buffer, '\n');
 
-		for (auto split : splitedBuffer)
-			value_[y].replace(x, x + split.length(), split); // unused parameter: w, h
+	int endX = x + width;
+	int endY = y + heigh;
+
+	if (!buffer.size() || endX > m_Width || endY > m_Height)
+	{
+		ERROR("%s - Drawing empty buffer or buffer size > %d * %d", __FUNCTION__, width, heigh);
+		return;
+	}
+
+	int localBufferIndex = 0;
+
+	if (endX > m_Width || endY > m_Height)
+	{
+		ERROR("%s - Drawing out of bounds > %d * %d", __FUNCTION__, width, heigh);
+		return;
+	}
+
+	for (int j = y; j < endY; j++)
+	{
+		for (int i = x; i < endX; i++)
+		{
+			int screenIndex = (j * m_Width) + (i);
+
+			m_Buffer[screenIndex] = buffer[localBufferIndex];
+			localBufferIndex++;
+		}
 	}
 }
 
 void ConsoleRenderer::DrawFrame()
 {
-	for (auto str : value_)
-		std::cout << str;
-}
-
-void ConsoleRenderer::ClearFrame()
-{
-	// \033[2J clears the screen, \033[1;1H moves cursor to top-left
-	std::cout << "\033[2J\033[1;1H";
-}
-
-ConsoleRenderer* ConsoleRenderer::Get(const std::vector<std::string>& value)
-{
-	if (consoleRenderer_ == nullptr)
+	// change every last column to be new line
+	for (int i = 1; i <= m_Height; i++)
 	{
-		consoleRenderer_ = new ConsoleRenderer(value);
+		// last column
+		int index = (m_Width * i) - 1;
+		m_Buffer[index] = '\n';
 	}
-	return consoleRenderer_;
+
+	// move cursor to top left
+	std::cout << "\033[1;1H" << m_Buffer;
+
+	m_Buffer.assign(m_Buffer.size(), ' ');
+}
+
+ConsoleRenderer& ConsoleRenderer::Get()
+{
+	static ConsoleRenderer instance;
+	return instance;
 }

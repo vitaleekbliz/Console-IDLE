@@ -8,9 +8,10 @@ class Game
 {
 public:
 	void Run();
-	void DebugConsole();
 
 private:
+	void DebugConsole();
+
 	ResourcesManager m_ResourceManager;
 	ObjectCreator m_ObjectCreator;
 };

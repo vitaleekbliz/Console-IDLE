@@ -1,4 +1,5 @@
 #pragma once
+#include "Logging/Logging.h"
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -7,24 +8,22 @@
 class ConsoleRenderer
 {
 public:
-	ConsoleRenderer(ConsoleRenderer& other) = delete;
-
+	ConsoleRenderer(const ConsoleRenderer&) = delete;
 	void operator=(const ConsoleRenderer&) = delete;
 
-	static ConsoleRenderer* Get(const std::vector<std::string>& value);
+	static ConsoleRenderer& Get();
 
-	void Init();
+	void Init(int width, int height);
 	void Close();
-	void Draw(int x, int y, int w, int h, std::string buffer);
+	void Draw(int x, int y, int w, int h, const std::string& buffer);
 	void DrawFrame();
-	void ClearFrame();
 
-protected:
-	ConsoleRenderer(const std::vector<std::string> value)
-		: value_(value) {}
-	~ConsoleRenderer();
+private:
+	ConsoleRenderer() = default;
+	~ConsoleRenderer() = default;
 
-	static ConsoleRenderer* consoleRenderer_;
+	int m_Width = 0;
+	int m_Height = 0;
 
-	std::vector<std::string> value_;
+	std::string m_Buffer;
 };
