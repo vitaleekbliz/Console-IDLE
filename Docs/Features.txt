@@ -1,0 +1,3 @@
+Using Resources.h macros for easier implementation of new Resources and their names;
+
+Using memory arena and templates for objects creation system;

@@ -1,5 +1,7 @@
 #pragma once
 #include "Resources/ResourcesManager.h"
+#include "Objects/ObjectCreator.h"
+#include "Objects/ProductionUnit.h"
 
 class Game
 {
@@ -8,4 +10,5 @@ public:
 
 private:
 	ResourcesManager m_ResourceManager;
+	ObjectCreator m_ObjectCreator;
 };
