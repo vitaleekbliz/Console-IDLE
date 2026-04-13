@@ -1,3 +1,4 @@
+#pragma once
 #include <cstdarg>
 
 enum class LogLevel : char

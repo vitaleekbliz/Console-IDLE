@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <ctime>
+#include <stdlib.h>
 
 void LogMessage(LogLevel level, const char* prefix, const char* format, ...)
 {
@@ -39,4 +40,9 @@ void LogMessage(LogLevel level, const char* prefix, const char* format, ...)
 
 	// 4. Reset color and newline
 	printf("\033[0m\n");
+
+	if (level == LogLevel::Fatal)
+	{
+		exit(0);
+	}
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "Defines.h"
-#include "Resource.h"
+#include "Resources.h"
 #include "Logging/Logging.h"
 #include <vector>
 
