@@ -1,5 +1,7 @@
-#include <cstdarg>
-#include "Defines.h"
+#include "Logging.h"
+
+#include <cstdio>
+#include <ctime>
 
 void LogMessage(LogLevel level, const char* prefix, const char* format, ...)
 {
