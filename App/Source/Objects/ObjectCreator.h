@@ -15,9 +15,9 @@ public:
 	void renderAll();
 	void updateAll();
 
-	template <typename T>
+	template <typename T, typename... Args>
 		requires std::derived_from<T, Object>
-	T* create()
+	T* create(Args&&... args)
 	{
 		if (m_ObjectArenas.empty() || m_ObjectArenas.back().IsFull())
 		{
@@ -25,7 +25,7 @@ public:
 			m_ObjectArenas.emplace_back(m_ArenaSize);
 		};
 
-		T* object = m_ObjectArenas.back().alloc<T>();
+		T* object = m_ObjectArenas.back().alloc<T>(std::forward<Args>(args)...);
 		m_Objects.push_back(object);
 		return object;
 	};
