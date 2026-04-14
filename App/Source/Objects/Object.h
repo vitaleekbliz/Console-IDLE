@@ -1,17 +1,21 @@
 #pragma once
 
+class ResourcesManager;
+
 class Object
 {
 public:
-	Object() = default;
+	Object(ResourcesManager* resourcesManager);
 	virtual ~Object() = default;
 
 	virtual void render() {};
 	virtual void update() {};
 
-	const bool isActive() const;
-	void setActive();
+	const bool isRenderable() const;
+	void setRenderMode(bool state);
 
+protected:
 private:
-	bool m_isActive = false;
+	ResourcesManager* m_ResourceManager = nullptr;
+	bool m_isRenderable = false;
 };
