@@ -21,7 +21,7 @@ public:
 	{
 		if (m_ObjectArenas.empty() || m_ObjectArenas.back().IsFull())
 		{
-			TRACE("Memory arena is full, creating new arena");
+			APP_TRACE("Memory arena is full, creating new arena");
 			m_ObjectArenas.emplace_back(m_ArenaSize);
 		};
 

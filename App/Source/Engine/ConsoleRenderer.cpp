@@ -1,7 +1,12 @@
 #include "ConsoleRenderer.h"
+#include <cstdio>
+#include "Logging/Logging.h"
+
+static ConsoleRenderer* s_Instance = nullptr;
 
 void ConsoleRenderer::Init(int width, int height)
 {
+	fwrite("\x1b[?25l", 1, 6, stdout);
 	// last column will be new line
 	m_Width = width;
 	m_Height = height;
@@ -10,16 +15,15 @@ void ConsoleRenderer::Init(int width, int height)
 
 void ConsoleRenderer::Close()
 {
-	m_Buffer.clear();
-	m_Width = 0;
-	m_Height = 0;
+	delete s_Instance;
+	s_Instance = nullptr;
 }
 
 void ConsoleRenderer::Draw(int x, int y, int width, int heigh, const std::string& buffer)
 {
 	if (x < 0 || y < 0 || x > m_Width || y > m_Height)
 	{
-		ERROR("%s - Drawing out of bounds (x %d, y %d)", __FUNCTION__, x, y);
+		APP_ERROR("%s - Drawing out of bounds (x %d, y %d)", __FUNCTION__, x, y);
 		return;
 	}
 
@@ -28,7 +32,7 @@ void ConsoleRenderer::Draw(int x, int y, int width, int heigh, const std::string
 
 	if (!buffer.size() || endX > m_Width || endY > m_Height)
 	{
-		ERROR("%s - Drawing empty buffer or buffer size > %d * %d", __FUNCTION__, width, heigh);
+		APP_ERROR("%s - Drawing empty buffer or buffer size > %d * %d", __FUNCTION__, width, heigh);
 		return;
 	}
 
@@ -36,7 +40,7 @@ void ConsoleRenderer::Draw(int x, int y, int width, int heigh, const std::string
 
 	if (endX > m_Width || endY > m_Height)
 	{
-		ERROR("%s - Drawing out of bounds > %d * %d", __FUNCTION__, width, heigh);
+		APP_ERROR("%s - Drawing out of bounds > %d * %d", __FUNCTION__, width, heigh);
 		return;
 	}
 
@@ -52,40 +56,61 @@ void ConsoleRenderer::Draw(int x, int y, int width, int heigh, const std::string
 	}
 }
 
-void ConsoleRenderer::DrawBorder()
+static void FormatBuffer(int width, int height, std::string& buffer)
 {
-	int endI = m_Buffer.length();
-	for (int i = 0; i < m_Buffer.length(); i++)
+	for (int i = 0; i < height * width; i++)
 	{
-		if (
-			(i > 0 && i < m_Width)
-			|| (i % m_Width == m_Width - 2)
-			|| (i % m_Width == 0)
-			|| (i >= endI - m_Width))
+		int row = i / width;
+		int col = i % width;
+
+		// 1. Handle Newlines (The very last character of every row)
+		if (col == width - 1)
 		{
-			m_Buffer[i] = '#';
+			buffer[i] = '\n';
+		}
+		// 2. Handle Horizontal Borders (First and Last Row)
+		else if (row == 0 || row == height - 1)
+		{
+			buffer[i] = '#';
+		}
+		// 3. Handle Vertical Borders (First and Last visible Column)
+		else if (col == 0 || col == width - 2)
+		{
+			buffer[i] = '#';
 		}
 	}
 }
 
 void ConsoleRenderer::DrawFrame()
 {
-	// change every last column to be new line
-	for (int i = 1; i <= m_Height; i++)
-	{
-		// last column
-		int index = (m_Width * i) - 1;
-		m_Buffer[index] = '\n';
-	}
+	FormatBuffer(m_Width, m_Height, m_Buffer);
 
-	// move cursor to top left
-	std::cout << "\033[1;1H" << m_Buffer;
+	// 2. Move cursor to top-left (row 1, col 1)
+	fwrite("\x1b[H", 1, 4, stdout);
 
-	m_Buffer.assign(m_Buffer.size(), ' ');
+	fwrite(m_Buffer.c_str(), 1, m_Buffer.size() + 1, stdout);
+
+	fflush(stdout);
+
+	std::fill(m_Buffer.begin(), m_Buffer.end(), '-');
+}
+
+ConsoleRenderer::ConsoleRenderer()
+{
+	// hide cursor
+	fwrite("\x1b[?25l", 1, 6, stdout);
+}
+
+ConsoleRenderer::~ConsoleRenderer()
+{
+	// show cursor
+	fwrite("\x1b[?25h", 1, 6, stdout);
 }
 
 ConsoleRenderer& ConsoleRenderer::Get()
 {
-	static ConsoleRenderer instance;
-	return instance;
+	if (!s_Instance)
+		s_Instance = new ConsoleRenderer();
+
+	return *s_Instance;
 }

@@ -25,17 +25,17 @@ void LogMessage(LogLevel level, const char* prefix, const char* format, ...);
 #endif
 
 #if ENABLE_TRACE
-	#define TRACE(...) LogMessage(LogLevel::Trace, "[TRACE]", __VA_ARGS__)
+	#define APP_TRACE(...) LogMessage(LogLevel::Trace, "[TRACE]", __VA_ARGS__)
 #else
-	#define TRACE(...)
+	#define APP_TRACE(...)
 #endif
 
 #if ENABLE_LOGGING
-	#define INFO(...) LogMessage(LogLevel::Info, "[INFO] ", __VA_ARGS__)
+	#define APP_INFO(...) LogMessage(LogLevel::Info, "[INFO] ", __VA_ARGS__)
 #else
-	#define INFO(...)
+	#define APP_INFO(...)
 #endif
 
-#define WARN(...) LogMessage(LogLevel::Warn, "[WARN] ", __VA_ARGS__)
-#define ERROR(...) LogMessage(LogLevel::Error, "[ERROR]", __VA_ARGS__)
-#define FATAL(...) LogMessage(LogLevel::Fatal, "[FATAL]", __VA_ARGS__)
+#define APP_WARN(...) LogMessage(LogLevel::Warn, "[WARN] ", __VA_ARGS__)
+#define APP_ERROR(...) LogMessage(LogLevel::Error, "[ERROR]", __VA_ARGS__)
+#define APP_FATAL(...) LogMessage(LogLevel::Fatal, "[FATAL]", __VA_ARGS__)

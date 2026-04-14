@@ -8,7 +8,7 @@ MemoryArena::MemoryArena(const MemoryArena& other)
 	// General purpose was to use templates and implement basic Memory Arena.
 	if (m_Current)
 	{
-		WARN("[Memory Arena] Copying To non empty memory arena");
+		APP_WARN("[Memory Arena] Copying To non empty memory arena");
 	}
 
 	size_t ocupiedMemory = other.m_Current - other.m_Base;
@@ -17,7 +17,7 @@ MemoryArena::MemoryArena(const MemoryArena& other)
 	{
 		if (m_Size < ocupiedMemory)
 		{
-			FATAL("Size is different from in %s", __FUNCTION__);
+			APP_FATAL("Size is different from in %s", __FUNCTION__);
 		}
 	}
 

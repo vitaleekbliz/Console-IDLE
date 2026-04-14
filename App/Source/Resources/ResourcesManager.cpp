@@ -11,7 +11,7 @@ ResourceValue ResourcesManager::getBalance(Resource resource) const
 
 	if (!resourceID)
 	{
-		ERROR("Vault doesn't have item with key - %s : %s", __FUNCTION__, ResourceData::Names[resourceID]);
+		APP_ERROR("Vault doesn't have item with key - %s : %s", __FUNCTION__, ResourceData::Names[resourceID]);
 		return 0;
 	}
 	return m_Vault[resourceID];
@@ -23,17 +23,17 @@ bool ResourcesManager::removeBalance(Resource resource, ResourceValue amount)
 
 	if (!resourceID)
 	{
-		ERROR("Vault doesn't have item with key - %s : %s", __FUNCTION__, ResourceData::Names[resourceID]);
+		APP_ERROR("Vault doesn't have item with key - %s : %s", __FUNCTION__, ResourceData::Names[resourceID]);
 		return false;
 	}
 
 	if (amount > m_Vault[resourceID])
 	{
-		WARN("Trying to substract more then available - %s : %s", __FUNCTION__, ResourceData::Names[resourceID]);
+		APP_WARN("Trying to substract more then available - %s : %s", __FUNCTION__, ResourceData::Names[resourceID]);
 		return false;
 	}
 
-	TRACE("%s %llu from vault key: %s", __FUNCTION__, amount, ResourceData::Names[resourceID]);
+	APP_TRACE("%s %llu from vault key: %s", __FUNCTION__, amount, ResourceData::Names[resourceID]);
 	m_Vault[resourceID] -= amount;
 	return true;
 }
@@ -44,11 +44,11 @@ void ResourcesManager::addBalance(Resource resource, ResourceValue amount)
 
 	if (!resourceID)
 	{
-		ERROR("Vault doesn't have item with key - %s : %s", __FUNCTION__, ResourceData::Names[resourceID]);
+		APP_ERROR("Vault doesn't have item with key - %s : %s", __FUNCTION__, ResourceData::Names[resourceID]);
 		return;
 	}
 
-	TRACE("%s %llu to vault key : %s", __FUNCTION__, amount, ResourceData::Names[resourceID]);
+	APP_TRACE("%s %llu to vault key : %s", __FUNCTION__, amount, ResourceData::Names[resourceID]);
 	m_Vault[resourceID] += amount;
 }
 

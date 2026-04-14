@@ -12,11 +12,11 @@ public:
 	MemoryArena(size_t size)
 		: m_Size(size)
 	{
-		TRACE("[Memory Arena] Creating memory arena %d", size);
+		APP_TRACE("[Memory Arena] Creating memory arena %d", size);
 		m_Base = static_cast<uint8_t*>(std::malloc(size));
 		if (!m_Base)
 		{
-			ERROR("[Memory Arena] Allocatin failed!");
+			APP_ERROR("[Memory Arena] Allocatin failed!");
 		}
 		m_Current = m_Base;
 	}
@@ -36,7 +36,7 @@ public:
 
 		if (m_Current - m_Base + padding + sizeof(T) > m_Size)
 		{
-			TRACE("Memory arena ran out of memory");
+			APP_TRACE("Memory arena ran out of memory");
 			m_isFull = true;
 			return nullptr; // Out of memory
 		}

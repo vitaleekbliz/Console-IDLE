@@ -1,9 +1,5 @@
 #pragma once
-#include "Logging/Logging.h"
 #include <string>
-#include <iostream>
-#include <sstream>
-#include <vector>
 
 class ConsoleRenderer
 {
@@ -15,13 +11,13 @@ public:
 
 	void Init(int width, int height);
 	void Close();
+
 	void Draw(int x, int y, int w, int h, const std::string& buffer);
-	void DrawBorder();
 	void DrawFrame();
 
 private:
-	ConsoleRenderer() = default;
-	~ConsoleRenderer() = default;
+	ConsoleRenderer();
+	~ConsoleRenderer();
 
 	int m_Width = 0;
 	int m_Height = 0;
