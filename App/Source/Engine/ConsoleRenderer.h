@@ -16,6 +16,7 @@ public:
 	void Init(int width, int height);
 	void Close();
 	void Draw(int x, int y, int w, int h, const std::string& buffer);
+	void DrawBorder();
 	void DrawFrame();
 
 private:

@@ -5,7 +5,7 @@ void ConsoleRenderer::Init(int width, int height)
 	// last column will be new line
 	m_Width = width;
 	m_Height = height;
-	m_Buffer.assign((size_t)m_Width * m_Width, ' ');
+	m_Buffer.assign((size_t)m_Width * m_Height, '-');
 }
 
 void ConsoleRenderer::Close()
@@ -48,6 +48,22 @@ void ConsoleRenderer::Draw(int x, int y, int width, int heigh, const std::string
 
 			m_Buffer[screenIndex] = buffer[localBufferIndex];
 			localBufferIndex++;
+		}
+	}
+}
+
+void ConsoleRenderer::DrawBorder()
+{
+	int endI = m_Buffer.length();
+	for (int i = 0; i < m_Buffer.length(); i++)
+	{
+		if (
+			(i > 0 && i < m_Width)
+			|| (i % m_Width == m_Width - 2)
+			|| (i % m_Width == 0)
+			|| (i >= endI - m_Width))
+		{
+			m_Buffer[i] = '#';
 		}
 	}
 }
