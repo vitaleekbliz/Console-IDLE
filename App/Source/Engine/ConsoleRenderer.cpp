@@ -3,7 +3,7 @@
 void ConsoleRenderer::Init(int width, int height)
 {
 	// last column will be new line
-	m_Width = width + 1;
+	m_Width = width;
 	m_Height = height;
 	m_Buffer.assign((size_t)m_Width * m_Width, ' ');
 }
@@ -11,6 +11,8 @@ void ConsoleRenderer::Init(int width, int height)
 void ConsoleRenderer::Close()
 {
 	m_Buffer.clear();
+	m_Width = 0;
+	m_Height = 0;
 }
 
 void ConsoleRenderer::Draw(int x, int y, int width, int heigh, const std::string& buffer)
