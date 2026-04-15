@@ -17,7 +17,6 @@ void ObjectCreator::renderAll()
 {
 	for (size_t i = 0; i < m_Objects.size(); i++)
 	{
-		if (m_Objects[i]->isRenderable())
-			m_Objects[i]->render();
+		m_Objects[i]->render();
 	}
 }

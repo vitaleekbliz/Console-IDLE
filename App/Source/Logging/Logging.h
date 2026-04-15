@@ -19,7 +19,7 @@ void LogMessage(LogLevel level, const char* prefix, const char* format, ...);
 #elif defined(RELEASE)
 	#define ENABLE_LOGGING 1
 	#define ENABLE_TRACE 0	 // No trace in Release
-#elif						 // Distribution
+#else						 // Distribution
 	#define ENABLE_LOGGING 0 // No logs in Dist (max performance)
 	#define ENABLE_TRACE 0
 #endif

@@ -6,11 +6,11 @@ static ConsoleRenderer* s_Instance = nullptr;
 
 void ConsoleRenderer::Init(int width, int height)
 {
-	fwrite("\x1b[?25l", 1, 6, stdout);
+	_fwrite_nolock("\x1b[?25l", 1, 6, stdout);
 	// last column will be new line
 	m_Width = width;
 	m_Height = height;
-	m_Buffer.assign((size_t)m_Width * m_Height, '-');
+	m_Buffer.assign((size_t)m_Width * m_Height, ' ');
 }
 
 void ConsoleRenderer::Close()
@@ -85,26 +85,26 @@ void ConsoleRenderer::DrawFrame()
 {
 	FormatBuffer(m_Width, m_Height, m_Buffer);
 
-	// 2. Move cursor to top-left (row 1, col 1)
-	fwrite("\x1b[H", 1, 4, stdout);
+	// Move cursor to top-left (row 1, col 1)
+	_fwrite_nolock("\x1b[H", 1, 4, stdout);
 
-	fwrite(m_Buffer.c_str(), 1, m_Buffer.size() + 1, stdout);
+	_fwrite_nolock(m_Buffer.c_str(), 1, m_Buffer.size() + 1, stdout);
 
 	fflush(stdout);
 
-	std::fill(m_Buffer.begin(), m_Buffer.end(), '-');
+	std::fill(m_Buffer.begin(), m_Buffer.end(), ' ');
 }
 
 ConsoleRenderer::ConsoleRenderer()
 {
 	// hide cursor
-	fwrite("\x1b[?25l", 1, 6, stdout);
+	_fwrite_nolock("\x1b[?25l", 1, 6, stdout);
 }
 
 ConsoleRenderer::~ConsoleRenderer()
 {
 	// show cursor
-	fwrite("\x1b[?25h", 1, 6, stdout);
+	_fwrite_nolock("\x1b[?25h", 1, 6, stdout);
 }
 
 ConsoleRenderer& ConsoleRenderer::Get()

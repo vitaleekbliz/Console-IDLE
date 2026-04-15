@@ -1,6 +1,5 @@
 #pragma once
 #include "Object.h"
-#include "Resources/ResourcesManager.h"
 
 class ProductionUnit : public Object
 {
@@ -8,6 +7,7 @@ public:
 	ProductionUnit() = default;
 	virtual ~ProductionUnit() = default;
 
+	virtual void render() override;
+
 private:
-	ResourcesManager* m_ResourcesManager = nullptr;
 };

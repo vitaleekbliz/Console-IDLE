@@ -1,16 +1,11 @@
 #include "Object.h"
+#include <iostream>
 
-Object::Object(ResourcesManager* resourcesManager)
-	: m_ResourceManager(resourcesManager)
+void Object::render()
 {
+	std::cout << "Render Object\n";
 }
 
-const bool Object::isRenderable() const
+void Object::update()
 {
-	return m_isRenderable;
-}
-
-void Object::setRenderMode(bool state)
-{
-	m_isRenderable = state;
 }
