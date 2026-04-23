@@ -6,8 +6,8 @@ Unfortunately Developing this project was dublicating SFML and SDL logic, so aft
 ## Project goals 
 
 1. Creating memory arena that would store all the objects inside pre-allocated memory for optimization purposes.
-2. Using one-dementional array for string storing to pushing it to stdout in one command.
-3. Using macros and templates to make Creating of new Resourses easier. (Resource.h)
+2. Using one-dementional string array to push to stdout in one command.
+3. Using macros and templates to make Creation of new Resourses easier. (Resource.h)
 4. Create Economy system that holds all the resources and values. Potentially accessible on multiple threads 
 
 ## Final version
