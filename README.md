@@ -1,8 +1,7 @@
 # C++ Console IDLE
 
 This project was planned to be one week task to create Console Game using symbols as pixels.  
-Unfortunately Developing this project started to be extremely painfull due to logging to the same console where game was drawn.  
-One of the solutions was to use logging to file, however that wouldn't be much better.
+Unfortunately Developing this project was dublicating SFML and SDL logic, so after reaching project goals, decision was made to move on to SDL IDLE game.  
 
 ## Project goals 
 
